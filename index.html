@@ -117,7 +117,17 @@
         })
         .then(response => response.json())
         .then(data => {
+            if (data.ok) {
+              alert('Send successful!');
+            } else {
+              alert('Error sending');
+            }
+
+            document.getElementById('email').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
         })
+
         .catch(error => {
           alert('Error:', error);
         });
